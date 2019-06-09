@@ -538,6 +538,7 @@ namespace BenProject.FilipinoApp.PagbabanghayKonsol
                     else panlapingNG = panlapi;
                 }
 
+                /*
                 banghay = banghay.Concat(new string[] { panlapi + (gitlingan ? "-" : string.Empty) + salita }).ToArray();
 
                 if (panlapingTaposSaNG2)
@@ -569,9 +570,9 @@ namespace BenProject.FilipinoApp.PagbabanghayKonsol
                         {
                             banghay = banghay.Concat(new string[] 
                             {
-                                Regex.Replace(panlapingNG, "[mn]$", string.Empty, RegexOptions.IgnoreCase) + 
-                                Regex.Replace(unangKP, "^.", Regex.Match(panlapingNG, "[mn]$", RegexOptions.IgnoreCase).Value, RegexOptions.IgnoreCase) + 
-                                Regex.Replace(salita, "^.", Regex.Match(panlapingNG, "[mn]$", RegexOptions.IgnoreCase).Value, RegexOptions.IgnoreCase)
+                                Regex.Replace(panlapingNG, "(ng|[mn])$", string.Empty, RegexOptions.IgnoreCase) + 
+                                Regex.Replace(unangKP, "^.", Regex.Match(panlapingNG, "(ng|[mn])$", RegexOptions.IgnoreCase).Value, RegexOptions.IgnoreCase) + 
+                                Regex.Replace(salita, "^.", Regex.Match(panlapingNG, "(ng|[mn])$", RegexOptions.IgnoreCase).Value, RegexOptions.IgnoreCase)
                             }).ToArray();
                         }
                     }
@@ -591,8 +592,9 @@ namespace BenProject.FilipinoApp.PagbabanghayKonsol
                         }
                     }
                 }
+                */
 
-                /*
+                
                 for (int a = 0; a < 2; a++) 
                 {
                     if (!(a == 1 && !ulitinAngUnangKP)) 
@@ -602,52 +604,39 @@ namespace BenProject.FilipinoApp.PagbabanghayKonsol
 
                     if (panlapingTaposSaNG2)
                     {
-                        if (simulaSaBaDaLaPaSaTa || simulaSaPatinig) banghay = banghay.Concat(new string[] { panlapingNG + salita }).ToArray();
-                        if ((simulaSaBaDaPaSaTa || simulaSaKa) && !simulaSaPatinig)
+                        if (simulaSaBaDaLaPaSaTa) 
                         {
-                            banghay = banghay.Concat(new string[] { Regex.Replace(panlapingNG, "[mn]$", string.Empty, RegexOptions.IgnoreCase) + Regex.Replace(salita, "^.", Regex.Match(panlapingNG, "[mn]$", RegexOptions.IgnoreCase).Value, RegexOptions.IgnoreCase) }).ToArray();
+                            banghay = banghay.Concat(new string[] { panlapingNG + (a == 1 ? unangKP: string.Empty) + salita }).ToArray();
                         }
-
-                        if (simulaSaBaDaLaPaSaTa) banghay = banghay.Concat(new string[] { panlapingNG + unangKP + salita }).ToArray();
-
                         if (simulaSaPatinig)
                         {
-                            banghay = banghay.Concat(new string[] { Regex.Replace(panlapingNG, "ng$", string.Empty, RegexOptions.IgnoreCase) + "ng" + unangKP + "ng" + salita }).ToArray();
+                            banghay = banghay.Concat(new string[] { panlapingNG + (a == 1 ? unangKP + "ng": string.Empty) + salita }).ToArray();
                         }
-                        else if (simulaSaBaDaPaSaTa || simulaSaKa) //pasubali: pangangayupapa -> ngayupapa o dayupapa?
+                        else if (simulaSaBaDaPaSaTa || simulaSaKa)
                         {
                             banghay = banghay.Concat(new string[] 
                             {
-                                Regex.Replace(panlapingNG, "[mn]$", string.Empty, RegexOptions.IgnoreCase) + 
-                                Regex.Replace(unangKP, "^.", Regex.Match(panlapingNG, "[mn]$", RegexOptions.IgnoreCase).Value, RegexOptions.IgnoreCase) + 
-                                Regex.Replace(salita, "^.", Regex.Match(panlapingNG, "[mn]$", RegexOptions.IgnoreCase).Value, RegexOptions.IgnoreCase)
+                                panlapingNG + (a == 1 ? Regex.Replace(unangKP, "^.", string.Empty, RegexOptions.IgnoreCase) + Regex.Match(panlapingNG, "(ng|[mn])$", RegexOptions.IgnoreCase).Value: string.Empty) + Regex.Replace(salita, "^.", string.Empty, RegexOptions.IgnoreCase)
                             }).ToArray();
                         }
                     }
-                }
-                
-                
-                
-                if (gawingRAngUnangTitik && simulaSaD && panlapingTaposSaPatinig2 && !simulaSaDARA)
-                {
-                    banghay = banghay.Concat(new string[] { panlapi + Regex.Replace(salita, "^d", "r", RegexOptions.IgnoreCase) }).ToArray();
-                }
-                if (simulaSaD && !simulaSaDARA)
-                {
-                    if (gawingRAngIkalawangUlit)
-                    {
-                        banghay = banghay.Concat(new string[] { panlapi + (gitlingan ? "-" : string.Empty) + unangKP + Regex.Replace(salita, "^d", "r", RegexOptions.IgnoreCase) }).ToArray();
-                        if (panlapingTaposSaNG2)
+
+                    if (simulaSaD && !simulaSaDARA)
+                    { 
+                        if (gawingRAngIkalawangUlit)
                         {
-                            banghay = banghay.Concat(new string[] { panlapingNG + unangKP + Regex.Replace(salita, "^d", "r", RegexOptions.IgnoreCase) }).ToArray();
+                            banghay = banghay.Concat(new string[] { panlapi + (gitlingan ? "-" : string.Empty) + unangKP + Regex.Replace(salita, "^d", "r", RegexOptions.IgnoreCase) }).ToArray();
+                            if (panlapingTaposSaNG2)
+                            {
+                                banghay = banghay.Concat(new string[] { panlapingNG + unangKP + Regex.Replace(salita, "^d", "r", RegexOptions.IgnoreCase) }).ToArray();
+                            }
+                        }
+                        if (gawingRAngUnangTitik && panlapingTaposSaPatinig2) 
+                        {
+                             banghay = banghay.Concat(new string[] { panlapi + (a == 1 ? Regex.Replace(unangKP, "^d", "r", RegexOptions.IgnoreCase): string.Empty) + Regex.Replace(salita, "^d", "r", RegexOptions.IgnoreCase) }).ToArray();
                         }
                     }
-                    if (gawingRAngUnangTitik && simulaSaD && panlapingTaposSaPatinig2)
-                    {
-                        banghay = banghay.Concat(new string[] { panlapi + Regex.Replace(unangKP, "^d", "r", RegexOptions.IgnoreCase) + Regex.Replace(salita, "^d", "r", RegexOptions.IgnoreCase) }).ToArray();
-                    }
                 }
-                */
             }
 
             else if (panlapiUri == PanlapiUri.Gitlapi)
@@ -765,14 +754,14 @@ namespace BenProject.FilipinoApp.PagbabanghayKonsol
             string[] hulapi = new string[] { "an", /*"in"*/ };
 
             banghay = banghay.Concat(Lapiin(salita)).ToArray();
-            //foreach (var item in unlapi)
-            //{
-            //    banghay = banghay.Concat(Lapiin(salita, PanlapiUri.Unlapi, SalitaDiin.Malumay, item)).ToArray();
-            //}
-            foreach (var item in gitlapi)
+            foreach (var item in unlapi)
             {
-                banghay = banghay.Concat(Lapiin(salita, PanlapiUri.Gitlapi, SalitaDiin.Malumay, item)).ToArray();
+                banghay = banghay.Concat(Lapiin(salita, PanlapiUri.Unlapi, SalitaDiin.Malumay, item)).ToArray();
             }
+            //foreach (var item in gitlapi)
+            //{
+            //    banghay = banghay.Concat(Lapiin(salita, PanlapiUri.Gitlapi, SalitaDiin.Malumay, item)).ToArray();
+            //}
             //foreach (var item in hulapi)
             //{
             //    banghay = banghay.Concat(Lapiin(salita, PanlapiUri.Hulapi, SalitaDiin.Malumi, item)).ToArray();
